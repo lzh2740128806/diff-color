@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no minimal-ui">
+	<meta charset="UTF-8">
+	<title>find it</title>
+	<style>
+		*{
+			margin: 0;
+			padding: 0;
+		}
+		body{
+		}
+		#score{
+			padding: 60px;
+			text-align: center;
+			font-weight: 600;
+			font-size: 30px;
+		}
+		#wrap{
+			margin: auto;
+			width: 90%;
+			max-width: 500px;
+			font-size: 0;
+		}
+		#wrap span{
+			display: inline-block;
+			border-radius: 50%;
+		}
+		#maxscore{
+			margin: 30px auto 0;
+			padding: 0 2em;
+			max-width: 500px;
+			font-size: 14px;
+			font-weight: normal;
+			text-align: right;
+		}
+	</style>
+</head>
+<body>
+	<div id="score">
+		<span>0</span>分
+		<div id="maxscore">
+			暂无最高分
+		</div>
+	</div>
+	<div id="wrap"></div>
+
+	<script>
+		//随机色
+		function randColor(num){
+			return '#' + ( ~~(Math.random() * 0xcccccc) ).toString(16).padStart(6, 0);
+		}
+
+		var score = document.querySelector('#score span');
+		var maxscore = document.querySelector('#maxscore');
+		var wrap = document.querySelector('#wrap');
+
+		//分数
+		var points = 0;
+		//行数
+		var count = 2;
+		//色值差
+		var opacity = .6;
+		//点错次数
+		var max_click = 0;
+
+		window.onload = creat;
+		function creat(){
+			localStorage.maxscore && (maxscore.innerHTML = '历史最高: ' + localStorage.maxscore + '分');
+
+			//无色差后通关
+			if(opacity >= 1){
+				alert( points + '分\n你通关了！' );
+				localStorage.maxscore = points;
+				return;
+			}
+
+			//
+			max_click = 0;
+			score.innerHTML = points;
+			var html = '';
+			var color = randColor();
+			for(var i=0; i<count*count; i++){
+				html += '<span style="background: ' + color + '; width: ' + 100/count + '%; padding-top: ' + 100/count + '%;"></span>';
+			}
+			wrap.innerHTML = html;
+
+			//随机色差块儿
+			document.querySelectorAll('#wrap span')[Math.floor(Math.random()*count*count)].classList.add('opacity');
+
+			var span = document.querySelectorAll('#wrap span');
+			var op = document.querySelector('.opacity');
+			op.style.opacity = opacity;
+
+			span.forEach(function(el){
+				el.onclick = function(){
+					max_click++;
+					if(max_click>=3){
+						localStorage.maxscore < points && (localStorage.maxscore = points);
+						var again = confirm( points + '分\n再来一局不？' );
+						points = 1;
+						count = 2;
+						opacity = .6;
+						max_click = 0;
+						again && creat();
+						!again && window.close();
+					}
+				}
+			});
+
+			//点对了就下一关
+			op.onclick = function(){
+				points++;
+				count++;
+				if(count>5){
+					count = 5;
+					opacity>.8? opacity /= .995 : opacity /= .99;
+				}
+				creat();
+			}
+
+		}
+	</script>
+</body>
+</html>
