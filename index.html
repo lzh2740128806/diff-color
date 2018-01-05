@@ -3,7 +3,7 @@
 <head>
 	<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no minimal-ui">
 	<meta charset="UTF-8">
-	<title>FIND IT</title>
+	<title>find it</title>
 	<style>
 		*{
 			margin: 0;
@@ -67,7 +67,7 @@
 
 		window.onload = creat;
 		function creat(){
-			localStorage.maxscore && (maxscore.innerHTML = '历史最高: ' + localStorage.maxscore + '分');
+			localStorage.maxscore? (maxscore.innerHTML = '历史最高: ' + localStorage.maxscore + '分') : localStorage.setItem('maxscore', 0);
 
 			//无色差后通关
 			if(opacity >= 1){
@@ -117,6 +117,7 @@
 					count = 5;
 					opacity>.8? opacity /= .995 : opacity /= .99;
 				}
+				localStorage.maxscore < points && (localStorage.maxscore = points);
 				creat();
 			}
 
