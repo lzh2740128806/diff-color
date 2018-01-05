@@ -71,7 +71,7 @@
 
 			//无色差后通关
 			if(opacity >= 1){
-				alert( points + '分\n你通关了！' );
+				alert( '\t' + points + '分\t\n你通关了！\t' );
 				localStorage.maxscore = points;
 				return;
 			}
@@ -98,7 +98,7 @@
 					max_click++;
 					if(max_click>=3){
 						localStorage.maxscore < points && (localStorage.maxscore = points);
-						var again = confirm( points + '分\n再来一局不？' );
+						var again = confirm( '\t' + points + '分\t\n\t再来一局不？\t' );
 						points = 0;
 						count = 2;
 						opacity = .6;
