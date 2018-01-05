@@ -8,11 +8,10 @@
 		*{
 			margin: 0;
 			padding: 0;
-		}
-		body{
+			box-sizing: border-box;
 		}
 		#score{
-			padding: 50px;
+			padding: 60px;
 			text-align: center;
 			font-weight: 600;
 			font-size: 30px;
@@ -71,7 +70,7 @@
 
 			//无色差后通关
 			if(opacity >= 1){
-				alert( '\t' + points + '分\t\n你通关了！\t' );
+				alert( points + '分\n你通关了！' );
 				localStorage.maxscore = points;
 				return;
 			}
@@ -85,6 +84,9 @@
 				html += '<span style="background: ' + color + '; width: ' + 100/count + '%; padding-top: ' + 100/count + '%;"></span>';
 			}
 			wrap.innerHTML = html;
+			document.querySelectorAll('#wrap span').forEach(function(el, i){
+				el.style.height = el.offsetWidth + 'px';
+			});
 
 			//随机色差块儿
 			document.querySelectorAll('#wrap span')[Math.floor(Math.random()*count*count)].classList.add('opacity');
