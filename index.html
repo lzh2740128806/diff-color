@@ -10,7 +10,7 @@
 			padding: 0;
 			box-sizing: border-box;
 		}
-		#score{
+		#score-wrap{
 			padding: 60px;
 			text-align: center;
 			font-weight: 600;
@@ -37,8 +37,8 @@
 	</style>
 </head>
 <body>
-	<div id="score">
-		<span>0</span>分
+	<div id="score-wrap">
+		<span id="score">0</span>分
 		<div id="maxscore">
 			暂无最高分
 		</div>
@@ -51,9 +51,9 @@
 			return '#' + Math.floor(Math.random() * 0xcccccc).toString(16).padStart(6, 0);
 		}
 
-		var score = document.querySelector('#score span');
-		var maxscore = document.querySelector('#maxscore');
-		var wrap = document.querySelector('#wrap');
+		var score = document.getElementById('score');
+		var maxscore = document.getElementById('maxscore');
+		var wrap = document.getElementById('wrap');
 
 		//分数
 		var points = 0;
@@ -84,18 +84,18 @@
 				html += '<span style="background: ' + color + '; width: ' + 100/count + '%; padding-top: ' + 100/count + '%;"></span>';
 			}
 			wrap.innerHTML = html;
-			document.querySelectorAll('#wrap span').forEach(function(el, i){
-				el.style.height = el.offsetWidth + 'px';
-			});
+			var span = [].slice.call(document.getElementById('wrap').getElementsByTagName('span'));
 
 			//随机色差块儿
-			document.querySelectorAll('#wrap span')[Math.floor(Math.random()*count*count)].classList.add('opacity');
+			span[Math.floor(Math.random()*count*count)].id = 'opacity';
 
-			var span = document.querySelectorAll('#wrap span');
-			var op = document.querySelector('.opacity');
+			var op = document.getElementById('opacity');
 			op.style.opacity = opacity;
 
 			span.forEach(function(el){
+
+				el.style.height = el.offsetWidth + 'px';
+
 				el.onclick = function(){
 					max_click++;
 					if(max_click>=3){
